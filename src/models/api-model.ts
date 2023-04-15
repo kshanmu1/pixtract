@@ -1,4 +1,4 @@
-import IApi from "@/interfaces/api_interface"
+import IApi from "@/interfaces/api-interface"
 export default class Api implements IApi {
     uri: string;
     request: object;
