@@ -3,6 +3,7 @@
 import axios from 'axios';
 import fs from 'fs';
 
+//KS
 export default new class SimpleStorageService {
     private _BASE_URL = "https://21pyee8jrg.execute-api.us-east-2.amazonaws.com/dev/"; 
     private __BUCKET = "pixtract"

@@ -22,14 +22,15 @@
 
 <script lang="ts">
 import Vue from 'vue'
-
+import MediaController from "../controllers/media-controller"
 export default Vue.extend({
     name: 'MediaView',
     methods:{
   
     }, 
     data() {
-    
+      const controller = MediaController.getAllMedia(); 
+      console.log(controller); 
       return {
        searchText:""
     };

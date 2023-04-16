@@ -1,5 +1,7 @@
 import PixMedia from "@/models/pixmedia";
 import AWS from "aws-sdk";
+
+//KS
 interface PartiQLExecuteStatementInput extends AWS.DynamoDB.DocumentClient.ExecuteStatementInput {
     ExpressionAttributeNames: { [key: string]: string };
     ExpressionAttributeValues: { [key: string]: AWS.DynamoDB.DocumentClient.AttributeValue };

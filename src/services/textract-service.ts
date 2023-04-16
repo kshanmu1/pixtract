@@ -3,6 +3,7 @@
 import ImageRekognitionResponse from '@/interfaces/rekognition-response-interface';
 import axios from 'axios';
 
+//KG & KS
 export default new class TextractService {
     private __URL = "https://n02ouewhm7.execute-api.us-east-2.amazonaws.com/dev"; 
     private _MIN_CONF = 96; 
@@ -24,5 +25,4 @@ export default new class TextractService {
           throw error;
         }
       }
-
     }

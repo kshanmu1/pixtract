@@ -1,6 +1,7 @@
 import INoteController from "@/interfaces/note-controller-interface";
 import PixMedia from "@/models/pixmedia";
 
+//KG
 export default class NoteController implements INoteController{
     getAllNotes(): PixMedia[] {
         throw new Error("Method not implemented.");

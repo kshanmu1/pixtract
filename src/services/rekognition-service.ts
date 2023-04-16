@@ -3,6 +3,7 @@
 import ImageRekognitionResponse from '@/interfaces/rekognition-response-interface';
 import axios from 'axios';
 
+//KG
 export default new class RekognitionService {
     private __URL = "https://n02ouewhm7.execute-api.us-east-2.amazonaws.com/dev"; 
     private _MIN_CONF = 96; 
@@ -24,5 +25,6 @@ export default new class RekognitionService {
           throw error;
         }
       }
+
 
     }
