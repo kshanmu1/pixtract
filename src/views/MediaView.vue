@@ -12,7 +12,7 @@
             ></v-text-field>
           </v-col>
           <v-col cols="12" sm="2">
-            <v-btn color="primary"  >Search</v-btn>
+            <v-btn color="primary" @click="OnSearch" >Search</v-btn>
           </v-col>
           <v-col cols="12" sm="1">
             <v-btn
@@ -87,19 +87,30 @@ export default Vue.extend({
      {
       const files = event.target.files
       const filename = files[0].name
+      console.log("Filename : " + filename);
       const reader = new FileReader();
       reader.readAsDataURL(files[0]);
       reader.onload = () => {
-        const base64String = reader.result?.toString().split(',')[1];
+        const base64String = reader.result?.toString().split(',')[1]??"";
         const dataUri = `data:image/jpg;base64,${base64String}`;
         console.log(dataUri);
         console.log("Converted to base64");
+        console.log("PPPPPPPPPPPPPPPPPPPPPPPPPPPPPPP");
+        console.log(filename); 
         const pix = new PixMedia("img", filename, filename.split('.')[1], "", {Bucket:"pixtract"}, "","",[],"","","")
         pix.localPath = dataUri; 
+        MediaController.insertMedia(pix,base64String); 
         this.pixImages.push(pix);
 
       };
       console.log("Picked"); 
+     },
+     OnSearch(){
+      const imgs = this.allPixMedia;
+      const searchImgResults = imgs.filter((p)=> p.searchTags.includes(this.searchText.toLocaleUpperCase()));
+      this.pixImages = searchImgResults; 
+      console.log("search!!" + this.searchText); 
+      console.log(this.pixImages);
      }
     }, 
     async created(){
@@ -116,6 +127,7 @@ export default Vue.extend({
       });
      console.log(filteredMedia);
      this.pixImages = filteredMedia; 
+     this.allPixMedia = filteredMedia; 
      this.imageKeys = imgKeys; 
 
     },
@@ -125,7 +137,8 @@ export default Vue.extend({
       return {
        searchText:"",
        imageKeys: [""],
-       pixImages: pixDefault
+       pixImages: pixDefault,
+       allPixMedia : pixDefault
     };
   }
 });

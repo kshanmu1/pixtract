@@ -1,11 +1,12 @@
 import IMediaController from "@/interfaces/media-controller-interface";
 import PixMedia from "@/models/pixmedia";
 import DynamooDbService from "@/services/dynamodb-service";
+import RekognitionService from "@/services/rekognition-service";
 import SimpleStorageService from "@/services/s3-service"
 
-export default new class MediaController implements IMediaController
+export default new class MediaController
 {
-    private _mediaArray : PixMedia[];
+     _mediaArray : PixMedia[];
 
     mediaKeys : string[] = []; 
 
@@ -49,6 +50,19 @@ export default new class MediaController implements IMediaController
     //add to __mediaArray
     addMedia(localPath: string, name: string): boolean {
         throw new Error("Method not implemented.");
+    }
+
+    async insertMedia(pixmedia:PixMedia, imgStr:string)
+    {
+
+        console.log(pixmedia.name); 
+        this._mediaArray.push(pixmedia);
+        await SimpleStorageService.uploadMedia(pixmedia,imgStr); 
+        const metadata = await RekognitionService.getMediaMetadata(pixmedia.name);
+        pixmedia.searchTags = metadata.map((tag)=> tag.toUpperCase());
+        console.log("updatedPix");
+        console.log(pixmedia);
+
     }
 
 
