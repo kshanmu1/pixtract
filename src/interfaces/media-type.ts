@@ -1,5 +1,5 @@
 
-export enum MediaType {
+ enum MediaType {
 
     Image = "img",
     
@@ -8,3 +8,5 @@ export enum MediaType {
     Note = "note"
     
     }
+
+export default MediaType; 

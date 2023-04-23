@@ -1,12 +1,11 @@
 import PixUtils from "../services/pixtract-utils"
-import { MediaType } from "@/interfaces/media-type";
 
     
    export default class PixMedia {
     
     id: string;
     
-    type: MediaType;
+    type: string;
     
     name: string;
     
@@ -30,7 +29,7 @@ import { MediaType } from "@/interfaces/media-type";
     
     constructor(
     
-    type: MediaType,
+    type: string,
     
     name: string,
     
