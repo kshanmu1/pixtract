@@ -16,6 +16,35 @@
           </v-col>
         </v-row>
       </v-container>
+      <v-container>
+        <v-row>
+          <v-col
+            v-for="pix in pixImages"
+            :key="pix.id"
+            class="d-flex child-flex"
+            cols="4"
+          >
+            <v-img
+              :src="pix.localPath"
+              aspect-ratio="1"
+              class="grey lighten-2"
+            >
+              <template v-slot:placeholder>
+                <v-row
+                  class="fill-height ma-0"
+                  align="center"
+                  justify="center"
+                >
+                  <v-progress-circular
+                    indeterminate
+                    color="grey lighten-5"
+                  ></v-progress-circular>
+                </v-row>
+              </template>
+            </v-img>
+          </v-col>
+        </v-row>
+     </v-container>
     </v-container>
 
 </template>
@@ -23,16 +52,38 @@
 <script lang="ts">
 import Vue from 'vue'
 import MediaController from "../controllers/media-controller"
+import SimpleStorageService from "../services/s3-service"
+import DynamoDbService from "../services/dynamodb-service"
+import PixMedia from '@/models/pixmedia';
 export default Vue.extend({
     name: 'MediaView',
     methods:{
   
     }, 
+    async created(){
+     // const img64 = await SimpleStorageService.downloadMedia("elephant.jpg"); 
+      const imgKeys = MediaController.mediaKeys; 
+      const pixMedia:PixMedia[] = await MediaController.getAllMedia(); 
+      let keyArr = [];
+      const filteredMedia:PixMedia[] = []; 
+      pixMedia.forEach((pix)=>{
+        if(localStorage.getItem(pix.name))
+        {
+          filteredMedia.push(pix);
+        }
+      });
+     console.log(filteredMedia);
+     this.pixImages = filteredMedia; 
+     this.imageKeys = imgKeys; 
+
+    },
     data() {
       const controller = MediaController.getAllMedia(); 
-      console.log(controller); 
+      const pixDefault:PixMedia[] =[] 
       return {
-       searchText:""
+       searchText:"",
+       imageKeys: [""],
+       pixImages: pixDefault
     };
   }
 });

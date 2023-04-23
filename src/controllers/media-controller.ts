@@ -1,10 +1,13 @@
 import IMediaController from "@/interfaces/media-controller-interface";
 import PixMedia from "@/models/pixmedia";
-
+import DynamooDbService from "@/services/dynamodb-service";
+import SimpleStorageService from "@/services/s3-service"
 
 export default new class MediaController implements IMediaController
 {
     private _mediaArray : PixMedia[];
+
+    mediaKeys : string[] = []; 
 
     constructor()
     {
@@ -15,7 +18,17 @@ export default new class MediaController implements IMediaController
     //Get all PixMedia objects from T_Media_Master table
     //Check if all media is available on client machine? if not, download from s3
     //Populate __mediaAttay internal State Obj. 
-    getAllMedia(): PixMedia[] {
+    async getAllMedia(): Promise<PixMedia[]> {
+        const allMedia : PixMedia[] = await DynamooDbService.getAllRowsMediaMaster();
+        
+        allMedia.forEach(async (pix)=>{
+             const imgStr = await SimpleStorageService.downloadMedia(pix.name)
+             pix.localPath = imgStr??""; 
+             this.mediaKeys.push(pix.name);
+        })
+        
+        this._mediaArray = allMedia;
+
         console.log("TEST IN CONTROLLER")
         return this._mediaArray; 
     }

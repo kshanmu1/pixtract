@@ -1,6 +1,6 @@
 <template>
   <v-container>
-    Media
+    Notes
     <v-container >
       <v-row class="d-flex justify-center">
         <v-col cols="12" sm="6">

@@ -81,6 +81,7 @@
     <script>
     import MediaView from "../views/MediaView.vue"
     import NotesView from "../views/NotesView.vue"
+    import SimpleStorageService from '../services/s3-service'
       export default {
         name:"DashboardView",
         components:{
@@ -88,6 +89,8 @@
           NotesView
         },
         data () {
+          // const img = SimpleStorageService.downloadMedia("elephant.jpg", window);
+          // console.log(img);
           return {
             username:this.$route.params.username,
             currentView:{
