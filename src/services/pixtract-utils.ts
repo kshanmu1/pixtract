@@ -1,16 +1,16 @@
 import IPixUtils from "@/interfaces/pixtract-util-interface";
-import uuid from 'uuid'; 
+import {v4} from 'uuid'; 
 //KS
 export default new class PixUtils{
-
+    filenameSeparator = "$$"
     //prefix:username_filename_UUID
     getUniqueName(name:string):string {
-        return name; 
+        return v4()+this.filenameSeparator+name; 
     }
 
     //UUID
     getNewUUID():string{
-        return ""; 
+        return v4(); 
     }
 
     getBase64Image(img:any):string {

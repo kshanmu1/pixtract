@@ -21,14 +21,15 @@ export default new class MediaController
     //Populate __mediaAttay internal State Obj. 
     async getAllMedia(): Promise<PixMedia[]> {
         const allMedia : PixMedia[] = await DynamooDbService.getAllRowsMediaMaster();
-        
+        console.log("GETALLMEDIA")
+        console.log(allMedia)
         allMedia.forEach(async (pix)=>{
              const imgStr = await SimpleStorageService.downloadMedia(pix.name)
              pix.localPath = imgStr??""; 
              this.mediaKeys.push(pix.name);
         })
         
-        this._mediaArray = allMedia;
+        this._mediaArray = allMedia; 
 
         console.log("TEST IN CONTROLLER")
         return this._mediaArray; 
@@ -62,6 +63,7 @@ export default new class MediaController
         pixmedia.searchTags = metadata.map((tag)=> tag.toUpperCase());
         console.log("updatedPix");
         console.log(pixmedia);
+        await DynamooDbService.insertMedia(pixmedia)
 
     }
 

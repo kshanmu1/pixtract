@@ -42,12 +42,14 @@ export default new class DynamoDbService {
         }
     }
 
-    public async insertMedia(media: DynamoDBMedia): Promise<DynamoDBResponse> {
+    public async insertMedia(media: PixMedia): Promise<DynamoDBResponse> {
         try {
             const reqBody = {
-                media: media
+                media: [media]
             };
             const response = await axios.post<DynamoDBResponse>(this.__INSERT_URL, reqBody);
+            console.log("INSERT MEDIA");
+            console.log(response);
             if (response.status !== 200) {
                 throw new Error(`Unexpected status code: ${response.status}`);
             }
