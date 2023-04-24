@@ -44,6 +44,7 @@ export default new class DynamoDbService {
 
     public async insertMedia(media: PixMedia): Promise<DynamoDBResponse> {
         try {
+            media.localPath=""; 
             const reqBody = {
                 media: [media]
             };

@@ -1,7 +1,7 @@
 <template>
     <v-container>
       Media
-      <v-container >
+      <v-container id="searchBar">
         <v-row class="d-flex justify-center">
           <v-col cols="12" sm="6">
             <v-text-field
@@ -29,7 +29,35 @@
           </v-col>
         </v-row>
       </v-container>
-      <v-container>
+      <v-container id="folders" >
+        <v-card
+        class="pa-3 ma-1"
+        elevation="1"
+        outlined
+        color="gray"
+         >
+        <h4 style="text-align:center">AUTO CATEGORIES</h4>
+        <br/>
+      <v-row>
+        <v-col v-for="fld in folderDict" :key="fld.key">
+          <v-chip
+          class="ma-1"
+          color="red"
+          :input-value="fld[1]"
+          filter
+          text-color="white"
+          @click="categoryClicked(fld[0])"
+        >
+          <v-icon left>
+            mdi-label
+          </v-icon>
+          {{fld[0]}}
+        </v-chip>
+        </v-col>
+      </v-row>
+        </v-card>
+      </v-container>
+      <v-container id="gallery">
         <v-row>
           <v-col
             v-for="pix in pixImages"
@@ -73,10 +101,7 @@
 <script lang="ts">
 import Vue from 'vue'
 import MediaController from "../controllers/media-controller"
-import SimpleStorageService from "../services/s3-service"
-import DynamoDbService from "../services/dynamodb-service"
 import PixMedia from '@/models/pixmedia';
-import MediaType from'@/interfaces/media-type';
 export default Vue.extend({
     name: 'MediaView',
     methods:{
@@ -93,52 +118,93 @@ export default Vue.extend({
       reader.onload = () => {
         const base64String = reader.result?.toString().split(',')[1]??"";
         const dataUri = `data:image/jpg;base64,${base64String}`;
-        console.log(dataUri);
-        console.log("Converted to base64");
-        console.log("PPPPPPPPPPPPPPPPPPPPPPPPPPPPPPP");
-        console.log(filename); 
         const pix = new PixMedia("img", filename, filename.split('.')[1], "", {Bucket:"pixtract"}, "","",[],"","","")
+        const insertPix = new PixMedia("img", filename, filename.split('.')[1], "", {Bucket:"pixtract"}, "","",[],"","","")
+        MediaController.insertMedia(insertPix,base64String); 
         pix.localPath = dataUri; 
-        MediaController.insertMedia(pix,base64String); 
         this.pixImages.push(pix);
-
       };
       console.log("Picked"); 
      },
      OnSearch(){
       const imgs = this.allPixMedia;
-      const searchImgResults = imgs.filter((p)=> p.searchTags.includes(this.searchText.toLocaleUpperCase()));
+      const searchImgResults :PixMedia[] = imgs.filter((p)=> p.searchTags.includes(this.searchText.toUpperCase()));
       this.pixImages = searchImgResults; 
+
+     },
+     FilterCategory(searchKey:string)
+     {
+      const imgs = this.allPixMedia;
+      if(searchKey!="All"){
+      const searchImgResults :PixMedia[] = imgs.filter((p)=> p.searchTags.includes(searchKey.toUpperCase()));
+      this.pixImages = searchImgResults; 
+      }else{
+        this.resetPage(); 
+      }
       console.log("search!!" + this.searchText); 
       console.log(this.pixImages);
-     }
+     },
+     categoryClicked(folder:string)
+     {
+          if(this.folderDict.get(folder))
+          {
+             this.folderDict.set(folder,false);
+             this.resetPage(); 
+          }
+          else{
+            this.folderDict.set(folder,true);
+            this.FilterCategory(folder); 
+          }
+     },
+     resetPage()
+     {
+      const filteredMedia:PixMedia[] = []; 
+      this.allPixMedia.forEach((pix)=>{
+        if(localStorage.getItem(pix.name)&&pix.type=="img")
+        {
+          filteredMedia.push(pix);
+        }
+      });
+      this.pixImages = filteredMedia; 
+    }
     }, 
     async created(){
-     // const img64 = await SimpleStorageService.downloadMedia("elephant.jpg"); 
       const imgKeys = MediaController.mediaKeys; 
       const pixMedia:PixMedia[] = await MediaController.getAllMedia(); 
-      let keyArr = [];
       const filteredMedia:PixMedia[] = []; 
       pixMedia.forEach((pix)=>{
-        if(localStorage.getItem(pix.name))
+        if(localStorage.getItem(pix.name)&&pix.type=="img")
         {
           filteredMedia.push(pix);
         }
       });
      console.log(filteredMedia);
+     const folders = await MediaController.getAllFolders(); 
+     console.log(folders); 
+     const folderDict = new Map<string,boolean>(); 
+     folders.forEach((f)=>{
+       folderDict.set(f, false); 
+     })
+     folderDict.set("All", true); 
+     console.log(folderDict);
+     this.folders = folders; 
+     this.folderDict = folderDict;
      this.pixImages = filteredMedia; 
-     this.allPixMedia = filteredMedia; 
+     this.allPixMedia = pixMedia; 
      this.imageKeys = imgKeys; 
 
     },
     data() {
-      const controller = MediaController.getAllMedia(); 
       const pixDefault:PixMedia[] =[] 
+      const defFolderDict: Map<string,boolean> = new Map<string,boolean>(); 
+
       return {
        searchText:"",
        imageKeys: [""],
        pixImages: pixDefault,
-       allPixMedia : pixDefault
+       allPixMedia : pixDefault,
+       folders:[""],
+       folderDict:defFolderDict
     };
   }
 });

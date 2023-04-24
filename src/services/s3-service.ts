@@ -48,7 +48,6 @@ export default new class SimpleStorageService {
           const dataUri = `data:image/jpg;base64,${Buffer.from(response.data, 'binary').toString('base64')}`;
         //  const imgDataURI_64 = PixUtils.getBase64Image(response.data);
          // console.log(dataUri); 
-          localStorage.setItem(fileName, dataUri);
           return dataUri; 
         } catch (error:any) {
           console.error(`Error downloading file from S3: ${error.message}`);

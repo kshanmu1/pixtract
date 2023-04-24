@@ -10,7 +10,7 @@ export default new class TextractService {
     private _BUCKET = "pixtract"
     private _MAX_LABELS = 50
 
-    public async getMediaMetadata(fileName: string): Promise<[string, string][]> {
+    public async getMediaMetadata(fileName: string): Promise<string[]> {
         try {
             const reqBody = {
                 bucket:this._BUCKET,
@@ -23,7 +23,7 @@ export default new class TextractService {
             throw new Error(`Unexpected status code: ${response.status}`);
           }
           const blocks = response.data.body.Blocks;
-          const blocksArray: [string, string][] = blocks.map(block => [block.BlockType, block.Text!]);
+          const blocksArray: string[] = blocks.map(block => block.Text??"");
           return blocksArray;
         } catch (error:any) {
           console.error(`Error calling API: ${error.message}`);
