@@ -156,12 +156,21 @@ export default Vue.extend({
       const insertPix = new PixMedia("notes", filename, filename.split('.')[1], "", {Bucket:"pixtract"}, "","",[],"","","")
       MediaController.insertNote(insertPix,base64String); 
       pix.localPath = dataUri; 
-      this.pixImages.push(pix);
+      this.pixNotes.push(pix);
     };
    },
    OnSearch(){
-    const imgs = this.allPixMedia;
-    const searchImgResults :PixMedia[] = imgs.filter((p)=> p.searchTags.includes(this.searchText.toUpperCase()));
+    const imgs = this.pixImages;
+    for(let i=0; i< imgs.length; i++)
+    {
+      const tg:PixMedia = imgs[i]; 
+      for(let j=0; j< tg.searchTags.length; j++)
+      {
+        tg.searchTags[j] = tg.searchTags[j].toUpperCase(); 
+      }
+      imgs[i] = tg; 
+    }
+    const searchImgResults :PixMedia[] = imgs.filter(p => p.searchTags.includes(this.searchText.toUpperCase()));
     this.pixImages = searchImgResults; 
     this.pixNotes = searchImgResults; 
 

@@ -21,8 +21,8 @@ export default new class MediaController
     //Check if all media is available on client machine? if not, download from s3
     //Populate __mediaAttay internal State Obj. 
     async getAllMedia(): Promise<PixMedia[]> {
-        if(this._mediaArray.length>0)
-        return this._mediaArray;
+        // if(this._mediaArray.length>0)
+        // return this._mediaArray;
 
         const allMedia : PixMedia[] = await DynamooDbService.getAllRowsMediaMaster();
         allMedia.forEach(async (pix)=>{
@@ -88,7 +88,7 @@ export default new class MediaController
         const tagArr:string[] = []; 
          metadata.forEach(txt=> {
             const temp = txt.split(" ");
-            temp.forEach(t=>t.toUpperCase());
+            temp.forEach((t)=>t.toUpperCase());
             tagArr.push(...temp);
         });
         pixmedia.searchTags = tagArr; 
@@ -100,6 +100,7 @@ export default new class MediaController
         //Avoid max 400KB exception for dynamoDB 
         await DynamooDbService.insertMedia(pixmedia);
       //  await this.fetchAllMediaAndUpdateCache();
+       return pixmedia; 
 
     }
 

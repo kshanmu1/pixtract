@@ -32,8 +32,8 @@
           </v-col>
         </v-row>
 
-      </v-container>
-      <v-container id="folders" >
+      </v-container >
+      <v-container id="folders">
         <v-card
         class="pa-3 ma-1"
         elevation="0"
@@ -127,6 +127,7 @@ export default Vue.extend({
         MediaController.insertMedia(insertPix,base64String); 
         pix.localPath = dataUri; 
         this.pixImages.push(pix);
+        MediaController._mediaArray.push(pix);
         const folders = MediaController.getAllFolders(); 
         const folderDict = new Map<string,boolean>(); 
         folders.forEach((f)=>{
@@ -139,6 +140,7 @@ export default Vue.extend({
      },
      OnSearch(){
       const imgs = this.allPixMedia;
+      imgs.forEach(p => {p.searchTags.map(t => t.toUpperCase())}); 
       const searchImgResults :PixMedia[] = imgs.filter((p)=> p.searchTags.includes(this.searchText.toUpperCase()));
       this.pixImages = searchImgResults; 
 
