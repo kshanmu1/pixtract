@@ -67,6 +67,7 @@
       <v-img
         :src="pnote.localPath"
         height="200px"
+        @click="openImagePopup(pnote.name)"
       ></v-img>
   
       <v-card-title>
@@ -187,11 +188,22 @@ export default Vue.extend({
           this.FilterCategory(folder); 
         }
    },
+   openImagePopup(imgName:any){
+      console.log(imgName); 
+      const id = imgName;
+      const filPix:PixMedia = this.allPixMedia.find(p=>p.name==id)??{} as PixMedia;
+      console.log(filPix); 
+      const datUri = filPix.localPath; 
+      let image = new Image();
+        image.src = datUri;
+        let w = window.open("", imgName, "popup");
+        w?.document.write(image.outerHTML);
+     }, 
    resetPage()
    {
     const filteredMedia:PixMedia[] = []; 
     this.allPixMedia.forEach((pix)=>{
-      if(localStorage.getItem(pix.name)&&pix.type=="notes")
+      if(pix.type=="notes")
       {
         filteredMedia.push(pix);
       }
@@ -204,7 +216,7 @@ export default Vue.extend({
     const pixMedia:PixMedia[] = await MediaController.getAllMedia(); 
     const filteredMedia:PixMedia[] = []; 
     pixMedia.forEach((pix)=>{
-      if(localStorage.getItem(pix.name)&&pix.type=="notes")
+      if(pix.type=="notes")
       {
         filteredMedia.push(pix);
       }

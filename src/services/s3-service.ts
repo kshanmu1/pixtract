@@ -32,22 +32,7 @@ export default new class SimpleStorageService {
         try {
           const fullURL = this.__URL+"/"+fileName
           const response = await axios.get(fullURL, {responseType: 'arraybuffer'});
-         // console.log(response)
-          // const url = window.URL.createObjectURL(new Blob([response.data]))
-          // // console.log(`File downloaded from S3 to ${url}. Response status: ${response.status}`);
-          // // const link = document.createElement('a')
-          // // link.href = url
-          // // link.setAttribute('download', 'tt_t.jpg');
-          // // document.body.appendChild(link)
-          // // link.click(); 
-          // const reader = new FileReader()
-          // reader.readAsDataURL(response.data)
-          // reader.onloadend = () => {
-          //  localStorage.setItem('imageData', reader.result as string)
-          //  }
           const dataUri = `data:image/jpg;base64,${Buffer.from(response.data, 'binary').toString('base64')}`;
-        //  const imgDataURI_64 = PixUtils.getBase64Image(response.data);
-         // console.log(dataUri); 
           return dataUri; 
         } catch (error:any) {
           console.error(`Error downloading file from S3: ${error.message}`);

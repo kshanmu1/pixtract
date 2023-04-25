@@ -32,11 +32,10 @@
       <v-container id="folders" >
         <v-card
         class="pa-3 ma-1"
-        elevation="1"
+        elevation="6"
         outlined
         color="gray"
          >
-        <h4 style="text-align:center">AUTO CATEGORIES</h4>
         <br/>
       <v-row>
         <v-col v-for="fld in folderDict" :key="fld.key">
@@ -63,12 +62,14 @@
             v-for="pix in pixImages"
             :key="pix.id"
             class="d-flex child-flex"
-            cols="4"
+            cols="3"
           >
             <v-img
               :src="pix.localPath"
               aspect-ratio="1"
+              @click="openImagePopup(pix.name)"
               class="grey lighten-2"
+              :id="pix.name"
             >
               <template v-slot:placeholder>
                 <v-row
@@ -108,11 +109,11 @@ export default Vue.extend({
       onPickFile(){
         (this.$refs.fileInput as any).click()
       },
-     onFilePicked(event:any)
+     async onFilePicked(event:any)
      {
       const files = event.target.files
       const filename = files[0].name
-      console.log("Filename : " + filename);
+      //console.log("Filename : " + filename);
       const reader = new FileReader();
       reader.readAsDataURL(files[0]);
       reader.onload = () => {
@@ -123,8 +124,17 @@ export default Vue.extend({
         MediaController.insertMedia(insertPix,base64String); 
         pix.localPath = dataUri; 
         this.pixImages.push(pix);
+        const folders = MediaController.getAllFolders(); 
+        console.log(folders); 
+        const folderDict = new Map<string,boolean>(); 
+        folders.forEach((f)=>{
+        folderDict.set(f, false); 
+        })
+        folderDict.set("All", true); 
+        console.log(folderDict);
+        this.folders = folders; 
+        this.folderDict = folderDict;
       };
-      console.log("Picked"); 
      },
      OnSearch(){
       const imgs = this.allPixMedia;
@@ -156,11 +166,22 @@ export default Vue.extend({
             this.FilterCategory(folder); 
           }
      },
+     openImagePopup(imgName:any){
+      console.log(imgName); 
+      const id = imgName;
+      const filPix:PixMedia = this.allPixMedia.find(p=>p.name==id)??{} as PixMedia;
+      console.log(filPix); 
+      const datUri = filPix.localPath; 
+      let image = new Image();
+        image.src = datUri;
+        let w = window.open("", imgName, "popup");
+        w?.document.write(image.outerHTML);
+     }, 
      resetPage()
      {
       const filteredMedia:PixMedia[] = []; 
       this.allPixMedia.forEach((pix)=>{
-        if(localStorage.getItem(pix.name)&&pix.type=="img")
+        if(pix.type=="img")
         {
           filteredMedia.push(pix);
         }
@@ -173,7 +194,7 @@ export default Vue.extend({
       const pixMedia:PixMedia[] = await MediaController.getAllMedia(); 
       const filteredMedia:PixMedia[] = []; 
       pixMedia.forEach((pix)=>{
-        if(localStorage.getItem(pix.name)&&pix.type=="img")
+        if(pix.type=="img")
         {
           filteredMedia.push(pix);
         }

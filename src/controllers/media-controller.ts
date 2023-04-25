@@ -30,7 +30,7 @@ export default new class MediaController
         allMedia.forEach(async (pix)=>{
              const imgStr = await SimpleStorageService.downloadMedia(pix.name)
              pix.localPath = imgStr??""; 
-             localStorage.setItem(pix.name, imgStr??"");
+            // localStorage.setItem(pix.name, imgStr??"");
              this.mediaKeys.push(pix.name);
         })
         
@@ -47,7 +47,7 @@ export default new class MediaController
         allMedia.forEach(async (pix)=>{
              const imgStr = await SimpleStorageService.downloadMedia(pix.name)
              pix.localPath = imgStr??""; 
-             localStorage.setItem(pix.name, imgStr??"");
+            // localStorage.setItem(pix.name, imgStr??"");
              this.mediaKeys.push(pix.name);
         })
         
