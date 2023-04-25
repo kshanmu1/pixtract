@@ -5,7 +5,7 @@
              <v-layout align-center justify-center>
                 <v-flex xs12 sm8 md4>
                    <v-card class="elevation-12">
-                      <v-toolbar dark color="#005A43">
+                      <v-toolbar dark color="#2a3990">
                          <v-toolbar-title>{{isRegister ? stateObj.register.name : stateObj.login.name}}</v-toolbar-title>
                       </v-toolbar>
                       <v-card-text>
@@ -40,7 +40,7 @@
                             <v-container>
                               <v-row>
                                  <v-col>
-                                    <v-btn dark type="submit" class="mt-4" color="#005A43" value="log in">{{isRegister ? stateObj.register.name : stateObj.login.name}}</v-btn>
+                                    <v-btn dark type="submit" class="mt-4" color="primary" value="log in">{{isRegister ? stateObj.register.name : stateObj.login.name}}</v-btn>
                                  </v-col>
                                  <v-col>
                                     <v-btn class="text-h7 mt-4" v-on:click="isRegister = !isRegister;">

@@ -2,7 +2,7 @@
     <v-layout>
         <!-- <v-app-bar color="#005A43" app clipped-left flat dark>
           </v-app-bar> -->
-           <v-navigation-drawer app clipped color="#DDF2EB" flat >
+           <v-navigation-drawer app dark  color="#2a3990" flat >
             <v-list>
               <v-list-item class="px-2">
                 <v-list-item-avatar>
