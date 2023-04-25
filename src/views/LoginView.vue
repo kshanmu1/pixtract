@@ -62,10 +62,12 @@
  </template>
  
  <script>
+import cognitoService from '../services/cognito-service';
  export default {
    name: "App",
    data() {
      return {
+       
        username: "",
        password: "",
        confirmPassword: "",
@@ -84,14 +86,28 @@
      };
    },
    methods: {
-     login() {
+      async login() {
        const { username } = this;
+       const resp = await cognitoService.validateCognito(this.username, this.password); 
+       if(resp == "success"){
        this.$router.replace({ name: "dashboard", params: { username: username } });
+       }
+       else{
+         this.errorMessage = "Invalid Username/Password."
+         console.log("ERRRORRRR_INV_LOGIN"); 
+       }
      },
-     register() {
+     async register() {
         if(this.password == this.confirmPassword){
            this.isRegister = false;
-           this.errorMessage = "";
+           const resp = await cognitoService.validateCognito(this.username, this.password); 
+           if(resp == "success"){
+            this.errorMessage = "Registration Successful."
+            }
+           else{
+           this.errorMessage = "Registration Failed."
+           console.log("ERRRORRRR_INV_LOGIN"); 
+            }
            this.$refs.form.reset();
         }
         else {
