@@ -7,9 +7,7 @@ export default new class CognitoService {
     private __URL = "https://8a3qzhu797.execute-api.us-east-2.amazonaws.com/prod/authenticate"; 
 
     public async validateCognito(username: string, password:string): Promise<string> {
-        console.log("COGNITO::");
-        console.log(username);
-        console.log(password); 
+        console.log(`Authenticating User : ${username} via Cognito ... `);
 
         try {
             const reqBody = {
@@ -17,6 +15,7 @@ export default new class CognitoService {
                 "password": password
               }
           const response = await axios.put(this.__URL, reqBody );
+          console.log("Authenticated => ")
           console.log(response); 
           if (response.status !== 200) {
             throw new Error(`Unexpected status code: ${response.status}`);

@@ -11,6 +11,7 @@ export default new class RekognitionService {
     private _MAX_LABELS = 50
 
     public async getMediaMetadata(fileName: string): Promise<string[]> {
+      console.log("Calling AWS REKOGNITION Service for Image Processing ... ")
         try {
             const reqBody = {
                 bucket:this._BUCKET,
@@ -19,6 +20,8 @@ export default new class RekognitionService {
                 minConfidence: this._MIN_CONF
               }
           const response = await axios.post<ImageRekognitionResponse>(this.__URL, reqBody );
+          console.log(" Image Processed :  Rekognition Response => ");
+          console.log(response); 
           if (response.status !== 200) {
             throw new Error(`Unexpected status code: ${response.status}`);
           }

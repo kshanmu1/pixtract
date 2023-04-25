@@ -9,16 +9,16 @@ export default new class DynamoDbService {
     private __INSERT_URL = "https://vsjk21yhii.execute-api.us-east-2.amazonaws.com/dev"; 
 
     public async getAllRowsMediaMaster(): Promise<PixMedia[]> {
+        console.log("Getting all rows from DynamoDB: T_MEDIA_MASTER ... "); 
         try {
             const response = await axios.post(this.__GET_URL);
             if (response.status !== 200) {
                 throw new Error(`Unexpected status code: ${response.status}`);
             }
-            //console.log(response);
             const awaitedData = await response.data; 
-           // console.log(awaitedData.body.data); 
             const resArray: PixMedia[] = JSON.parse(awaitedData.body.data)
-           // console.log(resArray);
+            console.log("Response : T_MEDIA_MASTER ALL ROWS : ")
+            console.log(resArray); 
             return resArray;
         } catch (error:any) {
             console.error(`Error calling API: ${error.message}`);
@@ -44,16 +44,16 @@ export default new class DynamoDbService {
 
     public async insertMedia(media: PixMedia): Promise<DynamoDBResponse> {
         try {
+            console.log("Inserting PixMedia Object into DynamoDB:T_MEDIA_MASTER ... ")
             media.localPath=""; 
             const reqBody = {
                 media: [media]
             };
             const response = await axios.post<DynamoDBResponse>(this.__INSERT_URL, reqBody);
-            console.log("INSERT MEDIA");
-            console.log(response);
             if (response.status !== 200) {
                 throw new Error(`Unexpected status code: ${response.status}`);
             }
+            console.log("Inserted PixMedia Object into DynamoDB: T_MEDIA_MASTER");
             return response.data;
         } catch (error: any) {
             console.error(`Error calling API: ${error.message}`);

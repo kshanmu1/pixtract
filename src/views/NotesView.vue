@@ -1,9 +1,9 @@
 <template>
   <v-container>
-    Notes
+    <h3 style="text-align:center">NOTES</h3>
     <v-container id="searchBar">
-      <v-row class="d-flex justify-center">
-        <v-col cols="12" sm="6">
+      <v-row style="text-align:center" class="d-flex justify-center">
+        <v-col cols="2" sm="8">
           <v-text-field
             v-model="searchText"
             label="Search"
@@ -11,20 +11,23 @@
 
           ></v-text-field>
         </v-col>
-        <v-col cols="12" sm="2">
-          <v-btn color="primary" @click="OnSearch" >Search</v-btn>
+        <v-col cols="2" sm="1">
+          <v-btn color="primary" dark @click="OnSearch" >Search</v-btn>
         </v-col>
-        <v-col cols="12" sm="1">
+        &nbsp;
+        &nbsp;
+        <v-col cols="2" sm="2">
           <v-btn
           class="mx-2"
-          fab
+          
           dark
           color="indigo"
           @click="onPickFile"
         >
-          <v-icon dark>
+          <!-- <v-icon dark>
             mdi-plus
-          </v-icon>
+          </v-icon> -->
+          Add Notes
         </v-btn>
         </v-col>
       </v-row>
@@ -71,25 +74,25 @@
       ></v-img>
   
       <v-card-title>
-        Document Notes
+       Digitized Notes
       </v-card-title>
-  
-      <v-card-subtitle>
-        {{pnote.digitizedNoteDocLocal}}
+      <v-card-subtitle>    
+        {{pnote.name}}
       </v-card-subtitle>
   
-      <v-expand-transition>
-        <div v-show="show">
-          <v-divider></v-divider>
-  
-          <v-card-text>
-            I'm a thing. But, like most politicians, he promised more than he could deliver. You won't have time for sleeping, soldier, not with all the bed making you'll be doing. Then we'll go with that data file! Hey, you add a one and two zeros to that or we walk! You're going to do his laundry? I've got to find a way to escape.
-          </v-card-text>
-        </div>
-      </v-expand-transition>
+      <div>
+      <v-card-text>
+        {{pnote.digitizedNoteDocLocal}}
+      </v-card-text>
+      </div>
+      <v-divider></v-divider>
+ 
+         
+
+
     </v-card>
     </v-container>
-    <v-container id="gallery">
+    <!-- <v-container id="gallery">
       <v-row>
         <v-col
           v-for="pix in pixImages"
@@ -117,7 +120,7 @@
           </v-img>
         </v-col>
       </v-row>
-   </v-container>
+   </v-container> -->
    <v-container>
     <input
       type="file"
@@ -144,7 +147,6 @@ export default Vue.extend({
    {
     const files = event.target.files
     const filename = files[0].name
-    console.log("Filename : " + filename);
     const reader = new FileReader();
     reader.readAsDataURL(files[0]);
     reader.onload = () => {
@@ -156,12 +158,12 @@ export default Vue.extend({
       pix.localPath = dataUri; 
       this.pixImages.push(pix);
     };
-    console.log("Picked"); 
    },
    OnSearch(){
     const imgs = this.allPixMedia;
     const searchImgResults :PixMedia[] = imgs.filter((p)=> p.searchTags.includes(this.searchText.toUpperCase()));
     this.pixImages = searchImgResults; 
+    this.pixNotes = searchImgResults; 
 
    },
    FilterCategory(searchKey:string)
@@ -173,8 +175,6 @@ export default Vue.extend({
     }else{
       this.resetPage(); 
     }
-    console.log("search!!" + this.searchText); 
-    console.log(this.pixImages);
    },
    categoryClicked(folder:string)
    {
@@ -189,10 +189,8 @@ export default Vue.extend({
         }
    },
    openImagePopup(imgName:any){
-      console.log(imgName); 
       const id = imgName;
       const filPix:PixMedia = this.allPixMedia.find(p=>p.name==id)??{} as PixMedia;
-      console.log(filPix); 
       const datUri = filPix.localPath; 
       let image = new Image();
         image.src = datUri;
@@ -221,15 +219,12 @@ export default Vue.extend({
         filteredMedia.push(pix);
       }
     });
-   console.log(filteredMedia);
    const folders = await MediaController.getAllFoldersForNotes(); 
-   console.log(folders); 
    const folderDict = new Map<string,boolean>(); 
    folders.forEach((f)=>{
      folderDict.set(f, false); 
    })
    folderDict.set("All", true); 
-   console.log(folderDict);
    this.folders = folders; 
    this.folderDict = folderDict;
    this.pixImages = filteredMedia; 

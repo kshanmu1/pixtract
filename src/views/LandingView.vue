@@ -44,7 +44,7 @@
             </v-list-item-icon>
   
             <v-list-item-content>
-              <v-list-item-title > Media </v-list-item-title>
+              <v-list-item-title > Images </v-list-item-title>
             </v-list-item-content>
           </v-list-item>
           <v-list-item v-on:click="showNotesView" link>

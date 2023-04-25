@@ -1,9 +1,9 @@
 <template>
     <v-container>
-      Media
+      <h3 style="text-align:center">IMAGES</h3>
       <v-container id="searchBar">
-        <v-row class="d-flex justify-center">
-          <v-col cols="12" sm="6">
+        <v-row style="text-align:center" class="d-flex justify-center">
+          <v-col cols="2" sm="8">
             <v-text-field
               v-model="searchText"
               label="Search"
@@ -11,28 +11,32 @@
   
             ></v-text-field>
           </v-col>
-          <v-col cols="12" sm="2">
-            <v-btn color="primary" @click="OnSearch" >Search</v-btn>
+          <v-col cols="2" sm="1">
+            <v-btn color="primary" dark @click="OnSearch" >Search</v-btn>
           </v-col>
-          <v-col cols="12" sm="1">
+          &nbsp;
+          &nbsp;
+          <v-col cols="2" sm="2">
             <v-btn
             class="mx-2"
-            fab
+            
             dark
             color="indigo"
             @click="onPickFile"
           >
-            <v-icon dark>
+            <!-- <v-icon dark>
               mdi-plus
-            </v-icon>
+            </v-icon> -->
+            Add Image
           </v-btn>
           </v-col>
         </v-row>
+
       </v-container>
       <v-container id="folders" >
         <v-card
         class="pa-3 ma-1"
-        elevation="6"
+        elevation="0"
         outlined
         color="gray"
          >
@@ -41,7 +45,7 @@
         <v-col v-for="fld in folderDict" :key="fld.key">
           <v-chip
           class="ma-1"
-          color="red"
+          color="#d23369"
           :input-value="fld[1]"
           filter
           text-color="white"
@@ -113,7 +117,6 @@ export default Vue.extend({
      {
       const files = event.target.files
       const filename = files[0].name
-      //console.log("Filename : " + filename);
       const reader = new FileReader();
       reader.readAsDataURL(files[0]);
       reader.onload = () => {
@@ -125,13 +128,11 @@ export default Vue.extend({
         pix.localPath = dataUri; 
         this.pixImages.push(pix);
         const folders = MediaController.getAllFolders(); 
-        console.log(folders); 
         const folderDict = new Map<string,boolean>(); 
         folders.forEach((f)=>{
         folderDict.set(f, false); 
         })
         folderDict.set("All", true); 
-        console.log(folderDict);
         this.folders = folders; 
         this.folderDict = folderDict;
       };
@@ -151,8 +152,6 @@ export default Vue.extend({
       }else{
         this.resetPage(); 
       }
-      console.log("search!!" + this.searchText); 
-      console.log(this.pixImages);
      },
      categoryClicked(folder:string)
      {
@@ -167,10 +166,8 @@ export default Vue.extend({
           }
      },
      openImagePopup(imgName:any){
-      console.log(imgName); 
       const id = imgName;
       const filPix:PixMedia = this.allPixMedia.find(p=>p.name==id)??{} as PixMedia;
-      console.log(filPix); 
       const datUri = filPix.localPath; 
       let image = new Image();
         image.src = datUri;
@@ -199,15 +196,12 @@ export default Vue.extend({
           filteredMedia.push(pix);
         }
       });
-     console.log(filteredMedia);
      const folders = await MediaController.getAllFolders(); 
-     console.log(folders); 
      const folderDict = new Map<string,boolean>(); 
      folders.forEach((f)=>{
        folderDict.set(f, false); 
      })
      folderDict.set("All", true); 
-     console.log(folderDict);
      this.folders = folders; 
      this.folderDict = folderDict;
      this.pixImages = filteredMedia; 

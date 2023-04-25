@@ -17,7 +17,7 @@ export default new class SimpleStorageService {
   
     public async uploadMedia(media:PixMedia, base64ImgStr:string) 
     {
-        //const data = PixUtils.base64ToArrayBuffer(base64ImgStr); 
+      console.log("Uploading Image to S3 ...");
         const reqBody={
           filename : media.name,
           base64Encoded : base64ImgStr
@@ -30,6 +30,7 @@ export default new class SimpleStorageService {
 
     public async downloadMedia(fileName: string){
         try {
+          console.log(`Downloading Image ${fileName} from S3 ...`);
           const fullURL = this.__URL+"/"+fileName
           const response = await axios.get(fullURL, {responseType: 'arraybuffer'});
           const dataUri = `data:image/jpg;base64,${Buffer.from(response.data, 'binary').toString('base64')}`;

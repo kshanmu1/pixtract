@@ -25,8 +25,6 @@ export default new class MediaController
         return this._mediaArray;
 
         const allMedia : PixMedia[] = await DynamooDbService.getAllRowsMediaMaster();
-        console.log("GETALLMEDIA")
-        console.log(allMedia)
         allMedia.forEach(async (pix)=>{
              const imgStr = await SimpleStorageService.downloadMedia(pix.name)
              pix.localPath = imgStr??""; 
@@ -36,14 +34,11 @@ export default new class MediaController
         
         this._mediaArray = allMedia; 
 
-        console.log("TEST IN CONTROLLER")
         return this._mediaArray; 
     }
     
     async fetchAllMediaAndUpdateCache() {
         const allMedia : PixMedia[] = await DynamooDbService.getAllRowsMediaMaster();
-        console.log("FETCH")
-        console.log(allMedia)
         allMedia.forEach(async (pix)=>{
              const imgStr = await SimpleStorageService.downloadMedia(pix.name)
              pix.localPath = imgStr??""; 
@@ -74,15 +69,12 @@ export default new class MediaController
     async insertMedia(pixmedia:PixMedia, imgStr:string)
     {
 
-        console.log(pixmedia.name); 
         this._mediaArray.push(pixmedia);
         await SimpleStorageService.uploadMedia(pixmedia,imgStr); 
         const metadata = await RekognitionService.getMediaMetadata(pixmedia.name);
         pixmedia.searchTags = metadata.map((tag)=> tag.toUpperCase());
-        console.log("updatedPix");
-        console.log(pixmedia);//Avoid max 400KB exception for dynamoDB 
+        //Avoid max 400KB exception for dynamoDB 
         await DynamooDbService.insertMedia(pixmedia);
-      //  await this.fetchAllMediaAndUpdateCache();
 
     }
 
@@ -90,20 +82,22 @@ export default new class MediaController
     async insertNote(pixmedia:PixMedia, imgStr:string)
     {
 
-        console.log(pixmedia.name); 
         this._mediaArray.push(pixmedia);
         await SimpleStorageService.uploadMedia(pixmedia,imgStr); 
         const metadata = await TextractService.getMediaMetadata(pixmedia.name);
-        console.log("TEXTRACT RESP");
-        console.log(metadata);
-        pixmedia.searchTags = metadata.map((tag)=> tag.toUpperCase());
+        const tagArr:string[] = []; 
+         metadata.forEach(txt=> {
+            const temp = txt.split(" ");
+            temp.forEach(t=>t.toUpperCase());
+            tagArr.push(...temp);
+        });
+        pixmedia.searchTags = tagArr; 
         let digitizedStr = "";
         metadata.forEach(str => {
            digitizedStr = digitizedStr+" "+str; 
         });
         pixmedia.digitizedNoteDocLocal = digitizedStr; 
-        console.log("updatedPix");
-        console.log(pixmedia);//Avoid max 400KB exception for dynamoDB 
+        //Avoid max 400KB exception for dynamoDB 
         await DynamooDbService.insertMedia(pixmedia);
       //  await this.fetchAllMediaAndUpdateCache();
 
@@ -116,8 +110,6 @@ export default new class MediaController
         const folderMap = new Map<string,number>();
         const result:string[] = [];
         const mediaPix = this._mediaArray.filter(pix => pix.type=="img");
-        console.log("filtered");
-        console.log(mediaPix)
         mediaPix.forEach((pix)=>{
             pix.searchTags.forEach((tag)=>{
                 if(folderMap.get(tag))
@@ -129,8 +121,6 @@ export default new class MediaController
                 }
             })
         });
-        console.log("FolderMap");
-        console.log(folderMap);
         for (const [key, value] of folderMap.entries()) {
             if (value > 1) {
               result.push(key);
@@ -155,8 +145,6 @@ export default new class MediaController
                 }
             })
         });
-        console.log("FolderMap");
-        console.log(folderMap);
         for (const [key, value] of folderMap.entries()) {
             if (value > 1) {
               result.push(key);
