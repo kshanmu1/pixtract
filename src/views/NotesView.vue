@@ -74,10 +74,10 @@
       ></v-img>
   
       <v-card-title>
-       Digitized Notes
+     {{pnote.name.split("$$")[1]}}
       </v-card-title>
       <v-card-subtitle>    
-        {{pnote.name}}
+        Digitized Notes  
       </v-card-subtitle>
   
       <div>
