@@ -1,6 +1,5 @@
 <template>
     <v-container>
-      <h3 style="text-align:center">IMAGES</h3>
       <v-container id="searchBar">
         <v-row style="text-align:center" class="d-flex justify-center">
           <v-col cols="2" sm="8">
@@ -212,6 +211,7 @@ export default Vue.extend({
 
     },
     data() {
+      console.log("Downloading images from S3 ...")
       const pixDefault:PixMedia[] =[] 
       const defFolderDict: Map<string,boolean> = new Map<string,boolean>(); 
 

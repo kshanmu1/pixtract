@@ -1,6 +1,5 @@
 <template>
   <v-container>
-    <h3 style="text-align:center">NOTES</h3>
     <v-container id="searchBar">
       <v-row style="text-align:center" class="d-flex justify-center">
         <v-col cols="2" sm="8">
