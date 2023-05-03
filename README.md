@@ -15,10 +15,9 @@ npm run serve
 npm run build
 ```
 
-### Lints and fixes files
-```
-npm run lint
-```
+### Folder Structure : 
+
+All the .py files in the /lambda folder under src are the code for the lambda functions that were used to communicate with various AWS services. 
 
 ### Customize configuration
 See [Configuration Reference](https://cli.vuejs.org/config/).
