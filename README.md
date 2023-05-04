@@ -18,6 +18,5 @@ npm run build
 ### Folder Structure : 
 
 All the .py files in the /lambda folder under src are the code for the lambda functions that were used to communicate with various AWS services. 
+The tests folder has the postman test collecton for all the API endpoints. 
 
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
