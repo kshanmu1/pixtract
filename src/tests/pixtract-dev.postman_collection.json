@@ -67,14 +67,6 @@
 			},
 			"request": {
 				"method": "GET",
-				"header": [
-					{
-						"key": "Authorization",
-						"value": "AWS AKIA6MP6CPFMR462OER5: fQ3LdY5f26erja1FCbOVGZ2QInWS4cA1VBW+DNdl",
-						"type": "text",
-						"disabled": true
-					}
-				],
 				"body": {
 					"mode": "file",
 					"file": {
