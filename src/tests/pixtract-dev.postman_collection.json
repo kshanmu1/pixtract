@@ -1,0 +1,355 @@
+{
+	"info": {
+		"_postman_id": "91a6b39f-a095-4583-86cd-f15455f7e88a",
+		"name": "pixtract-dev",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "26409006",
+		"_collection_link": "https://restless-shadow-528915.postman.co/workspace/Pixtract~59f770fa-11da-4442-b729-e2f8c5775c27/collection/26409006-91a6b39f-a095-4583-86cd-f15455f7e88a?action=share&creator=26409006&source=collection_link"
+	},
+	"item": [
+		{
+			"name": "Test API",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://363258hhp1.execute-api.us-east-2.amazonaws.com/my-function-functor-test",
+					"protocol": "https",
+					"host": [
+						"363258hhp1",
+						"execute-api",
+						"us-east-2",
+						"amazonaws",
+						"com"
+					],
+					"path": [
+						"my-function-functor-test"
+					]
+				},
+				"description": "Test API"
+			},
+			"response": []
+		},
+		{
+			"name": "s3 upload",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "file",
+					"file": {
+						"src": "XV72Z5hS0/sample-1.jpg"
+					}
+				},
+				"url": {
+					"raw": "https://21pyee8jrg.execute-api.us-east-2.amazonaws.com/dev/{{bucket}}/sample.jpg",
+					"protocol": "https",
+					"host": [
+						"21pyee8jrg",
+						"execute-api",
+						"us-east-2",
+						"amazonaws",
+						"com"
+					],
+					"path": [
+						"dev",
+						"{{bucket}}",
+						"sample.jpg"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "s3 download",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "AWS AKIA6MP6CPFMR462OER5: fQ3LdY5f26erja1FCbOVGZ2QInWS4cA1VBW+DNdl",
+						"type": "text",
+						"disabled": true
+					}
+				],
+				"body": {
+					"mode": "file",
+					"file": {
+						"src": ""
+					}
+				},
+				"url": {
+					"raw": "https://21pyee8jrg.execute-api.us-east-2.amazonaws.com/dev/{{bucket}}/sample.jpg",
+					"protocol": "https",
+					"host": [
+						"21pyee8jrg",
+						"execute-api",
+						"us-east-2",
+						"amazonaws",
+						"com"
+					],
+					"path": [
+						"dev",
+						"{{bucket}}",
+						"sample.jpg"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "ImageRekognition",
+			"request": {
+				"method": "GET",
+				"header": []
+			},
+			"response": []
+		},
+		{
+			"name": "ImageRekognition Copy",
+			"request": {
+				"method": "GET",
+				"header": []
+			},
+			"response": []
+		},
+		{
+			"name": "Textract",
+			"request": {
+				"method": "GET",
+				"header": []
+			},
+			"response": []
+		},
+		{
+			"name": "GetMediaMaster",
+			"request": {
+				"method": "GET",
+				"header": []
+			},
+			"response": []
+		},
+		{
+			"name": "InsertMediaMaster",
+			"request": {
+				"method": "GET",
+				"header": []
+			},
+			"response": []
+		},
+		{
+			"name": "Cognito Signin/Signup",
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {
+					"content-type": true
+				}
+			},
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"username\": \"yashaswihasarali\",\n  \"password\": \"Password01!\"\n}"
+				},
+				"url": {
+					"raw": "https://8a3qzhu797.execute-api.us-east-2.amazonaws.com/prod/authenticate",
+					"protocol": "https",
+					"host": [
+						"8a3qzhu797",
+						"execute-api",
+						"us-east-2",
+						"amazonaws",
+						"com"
+					],
+					"path": [
+						"prod",
+						"authenticate"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "opensearch - Search",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "Pixtract19!",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "pixtract",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n            \"size\": 25,\n            \"query\": {\n                \"multi_match\": {\n                    \"query\": \"person\",\n                    \"fields\": [\"name\", \"searchTags.S\", \"digitizedNoteDocLocal\", \"type\"]\n                }\n            }\n        }",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://search-pixtract-bc3ijhuatzljh6fwjuyhyi4o2e.us-east-2.es.amazonaws.com/_search",
+					"protocol": "https",
+					"host": [
+						"search-pixtract-bc3ijhuatzljh6fwjuyhyi4o2e",
+						"us-east-2",
+						"es",
+						"amazonaws",
+						"com"
+					],
+					"path": [
+						"_search"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "opnsearch - add Index",
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "Pixtract19!",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "pixtract",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [],
+				"url": {
+					"raw": "https://search-pixtract-bc3ijhuatzljh6fwjuyhyi4o2e.us-east-2.es.amazonaws.com/media_master",
+					"protocol": "https",
+					"host": [
+						"search-pixtract-bc3ijhuatzljh6fwjuyhyi4o2e",
+						"us-east-2",
+						"es",
+						"amazonaws",
+						"com"
+					],
+					"path": [
+						"media_master"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "opensearch - insert item",
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "Pixtract19!",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "pixtract",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"id\": \"c74c1747-fa47-4657-a503-3aae88b787f1\",\n    \"contentProviderMetadata\": {\n      \"Bucket\": {\n        \"S\": \"pixtract\"\n      }\n    },\n    \"digitizedNoteDocLocal\": \"\",\n    \"digitizedNoteDocUrl\": \"\",\n    \"extension\": \"jpg\",\n    \"folder\": \"\",\n    \"localPath\": \"\",\n    \"name\": \"f51e345a-ade0-4f6b-b13f-1ae958b81b8d$$woman.jpg\",\n    \"searchTags\": [\n      {\n        \"S\": \"ACCESSORIES\"\n      },\n      {\n        \"S\": \"SUNGLASSES\"\n      },\n      {\n        \"S\": \"FACE\"\n      },\n      {\n        \"S\": \"HEAD\"\n      },\n      {\n        \"S\": \"PERSON\"\n      },\n      {\n        \"S\": \"PHOTOGRAPHY\"\n      },\n      {\n        \"S\": \"PORTRAIT\"\n      },\n      {\n        \"S\": \"GRASS\"\n      },\n      {\n        \"S\": \"PLANT\"\n      },\n      {\n        \"S\": \"FLOWER\"\n      }\n    ],\n    \"searchText\": \"\",\n    \"type\": \"img\",\n    \"url\": \"\"\n  }",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://search-pixtract-bc3ijhuatzljh6fwjuyhyi4o2e.us-east-2.es.amazonaws.com/media_master/_doc/c74c1747-fa47-4657-a503-3aae88b787f1",
+					"protocol": "https",
+					"host": [
+						"search-pixtract-bc3ijhuatzljh6fwjuyhyi4o2e",
+						"us-east-2",
+						"es",
+						"amazonaws",
+						"com"
+					],
+					"path": [
+						"media_master",
+						"_doc",
+						"c74c1747-fa47-4657-a503-3aae88b787f1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "opensarch - delete item",
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "Pixtract19!",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "pixtract",
+							"type": "string"
+						}
+					]
+				},
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "https://search-pixtract-bc3ijhuatzljh6fwjuyhyi4o2e.us-east-2.es.amazonaws.com/media_master/_doc/4990f319-d2fc-4e58-b27e-d590a487aecc",
+					"protocol": "https",
+					"host": [
+						"search-pixtract-bc3ijhuatzljh6fwjuyhyi4o2e",
+						"us-east-2",
+						"es",
+						"amazonaws",
+						"com"
+					],
+					"path": [
+						"media_master",
+						"_doc",
+						"4990f319-d2fc-4e58-b27e-d590a487aecc"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
